@@ -1,112 +1,199 @@
-# 🧑‍💼 AI Hiring Assistant — Multi-Agent System
+# 🧑‍💼 AI Hiring Assistant — Multi-Agent Recruitment System
 
-> **4 specialized AI agents + ChromaDB semantic search + LLM-as-Judge evaluation**
+> **A production-oriented multi-agent AI system that automates resume screening, candidate evaluation, interview question generation, and hiring recommendations using LLMs, semantic search, and agent orchestration.**
 
-**Live Demo:** [your-app.streamlit.app](#) ← update after deploy
-**GitHub:** [github.com/yourusername/hiring-assistant](#)
-
----
-
-## What it does
-
-Upload a job description + multiple resumes → 4 AI agents collaborate to screen
-candidates, generate tailored interview questions, and produce a hiring report.
-
-```
-JD + Resumes
-     │
-     ▼
-🔍 Job Analyzer      →  Extracts required/preferred skills, experience, role summary
-     │
-     ▼
-📊 Resume Screener   →  ChromaDB semantic similarity + LLM deep assessment → Score 0-10
-     │
-     ▼
-❓ Question Gen      →  6 personalized interview questions per shortlisted candidate
-     │
-     ▼
-📝 Report Writer     →  Full hiring report: rankings, analysis, recommendations
-     │
-     ▼
-⭐ Evaluator         →  LLM-as-Judge scores each agent output independently
-```
+**GitHub:** https://github.com/9bishal/hiring-assistant
 
 ---
 
-## Impressive Features (10-12 LPA signal)
+## Overview
 
-| Feature | Why it matters |
-|---------|---------------|
-| **Two-stage screening** | ChromaDB vector similarity + LLM deep assessment — mirrors enterprise ATS |
-| **Semantic search** | Catches skill synonyms ("built ML models" ≈ "developed machine learning pipelines") |
-| **Personalized questions** | Questions probe each candidate's specific gaps, not generic questions |
-| **LLM-as-Judge evaluation** | Independent quality scoring — production AI monitoring pattern |
-| **Typed shared state** | `HiringState` TypedDict — every agent's I/O is explicit and testable |
-| **Session memory** | LangGraph MemorySaver — sessions are isolated and persistent |
+The AI Hiring Assistant streamlines the recruitment workflow by combining specialized AI agents, semantic resume search, and LLM-based candidate evaluation.
+
+Recruiters can upload a Job Description (JD) along with multiple resumes. The system automatically analyzes job requirements, ranks candidates, generates personalized interview questions, and produces a comprehensive hiring report.
+
+### Workflow
+
+```text
+Job Description + Resumes
+           │
+           ▼
+🔍 Job Analyzer Agent
+   └─ Extracts required skills, preferred skills,
+      experience requirements, and role summary
+
+           ▼
+📊 Resume Screener Agent
+   └─ ChromaDB semantic matching
+   └─ LLM-based candidate assessment
+   └─ Candidate scoring (0–10)
+
+           ▼
+❓ Interview Question Generator
+   └─ Generates personalized technical and behavioral
+      questions based on candidate strengths and gaps
+
+           ▼
+📝 Hiring Report Generator
+   └─ Candidate rankings
+   └─ Skill-gap analysis
+   └─ Hiring recommendations
+
+           ▼
+⭐ Evaluation Layer
+   └─ LLM-as-Judge evaluates agent outputs for quality,
+      consistency, and decision reliability
+```
 
 ---
 
-## File Structure
+## Key Features
 
-```
+### Multi-Agent Architecture
+
+The system utilizes four specialized AI agents, each responsible for a specific stage of the hiring process:
+
+* Job Requirement Analysis
+* Resume Screening & Ranking
+* Interview Question Generation
+* Hiring Report Creation
+
+### Semantic Resume Matching
+
+Uses ChromaDB vector search and sentence embeddings to identify relevant candidates based on semantic similarity rather than exact keyword matches.
+
+Examples:
+
+* "Built ML models" ≈ "Developed machine learning pipelines"
+* "RAG application" ≈ "Retrieval-Augmented Generation system"
+* "LLM Agent" ≈ "AI workflow automation"
+
+### Two-Stage Candidate Evaluation
+
+1. Vector Similarity Search
+
+   * Fast semantic candidate retrieval
+
+2. LLM-Based Assessment
+
+   * Deep evaluation of skills, experience, project relevance, and job fit
+
+### Personalized Interview Questions
+
+Generates candidate-specific questions targeting:
+
+* Skill gaps
+* Resume claims
+* Project experience
+* Role-specific competencies
+
+### LLM-as-Judge Evaluation
+
+Implements an evaluation layer that independently scores agent outputs based on:
+
+* Accuracy
+* Completeness
+* Relevance
+* Consistency
+
+This mirrors modern AI evaluation and observability practices used in production systems.
+
+### Persistent Workflow State
+
+* Typed shared state using `TypedDict`
+* Agent communication through LangGraph state management
+* Session persistence using MemorySaver
+
+---
+
+## Project Structure
+
+```text
 hiring-assistant/
 ├── agents/
-│   ├── job_analyzer.py        ← Agent 1: parse JD into structured requirements
-│   ├── resume_screener.py     ← Agent 2: ChromaDB + LLM candidate scoring
-│   ├── question_generator.py  ← Agent 3: personalized interview questions
-│   └── report_writer.py       ← Agent 4: full hiring report
+│   ├── job_analyzer.py
+│   ├── resume_screener.py
+│   ├── question_generator.py
+│   └── report_writer.py
+│
 ├── graph/
-│   ├── state.py               ← HiringState TypedDict (shared memory)
-│   └── workflow.py            ← LangGraph StateGraph + MemorySaver
+│   ├── state.py
+│   └── workflow.py
+│
 ├── tools/
-│   ├── pdf_parser.py          ← PyMuPDF PDF text extraction
-│   └── vector_store.py        ← ChromaDB semantic search
+│   ├── pdf_parser.py
+│   └── vector_store.py
+│
 ├── evaluation/
-│   └── evaluator.py           ← LLM-as-Judge scoring node
-├── docs/
-│   ├── ARCHITECTURE.md        ← Deep technical breakdown
-│   ├── HOW_TO_EXPLAIN.md      ← Interview prep (read before every interview)
-│   ├── EVALUATION.md          ← Evaluation methodology
-│   └── SETUP.md               ← Local + deployment setup
-├── app.py                     ← Streamlit UI
-├── test_run.py                ← Terminal test (run first)
-└── requirements.txt
+│   └── evaluator.py
+│
+├── app.py
+├── test_run.py
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-| Component | Technology |
-|-----------|-----------|
-| Agent Orchestration | **LangGraph** StateGraph |
-| LLM | **Groq** LLaMA 3.3 70B (free) |
-| Semantic Search | **ChromaDB** + sentence-transformers |
-| PDF Parsing | **PyMuPDF** (fitz) |
-| Evaluation | **LLM-as-Judge** pattern |
-| UI | **Streamlit** + Plotly |
-| Memory | **LangGraph MemorySaver** |
+| Component       | Technology            |
+| --------------- | --------------------- |
+| Agent Framework | LangGraph             |
+| LLM Provider    | Groq (Llama 3.3 70B)  |
+| Vector Database | ChromaDB              |
+| Embeddings      | Sentence Transformers |
+| PDF Processing  | PyMuPDF               |
+| Evaluation      | LLM-as-Judge          |
+| Frontend        | Streamlit             |
+| Visualization   | Plotly                |
+| Memory          | LangGraph MemorySaver |
 
 ---
 
-## Quick Start
+## Getting Started
 
 ```bash
-git clone https://github.com/yourusername/hiring-assistant
+git clone https://github.com/9bishal/hiring-assistant.git
+
 cd hiring-assistant
-python -m venv venv && source venv/bin/activate
+
+python -m venv venv
+source venv/bin/activate
+
 pip install -r requirements.txt
-cp .env.example .env        # add GROQ_API_KEY
-python test_run.py          # test pipeline in terminal
-streamlit run app.py        # launch UI
+
+# Add your API key
+cp .env.example .env
+
+python test_run.py
+
+streamlit run app.py
 ```
 
 ---
 
-## Key Metrics
+## Performance Highlights
 
-- Screens N resumes in ~30-45 seconds (3 resumes)
-- Two-stage scoring: vector similarity + LLM assessment
-- Shortlist threshold: score ≥ 6.0 / 10
-- Generates 6 personalized questions per shortlisted candidate
-- Overall pipeline score via weighted LLM-as-Judge evaluation
+* Processes multiple resumes automatically
+* Semantic candidate matching using vector search
+* Candidate scoring on a 0–10 scale
+* Automated candidate shortlisting
+* Personalized interview question generation
+* End-to-end hiring report generation
+* Independent AI evaluation of workflow outputs
+
+---
+
+## Skills Demonstrated
+
+* Multi-Agent Systems
+* Agent Orchestration with LangGraph
+* Retrieval-Augmented Generation (RAG)
+* Vector Databases & Semantic Search
+* LLM Application Development
+* Prompt Engineering
+* AI Evaluation Frameworks
+* Workflow State Management
+* Streamlit Application Development
+* Production AI System Design
