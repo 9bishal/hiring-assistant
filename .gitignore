@@ -1,0 +1,77 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Directory-specific pycache (extra safety)
+graph/__pycache__/
+agents/__pycache__/
+tools/__pycache__/
+evaluation/__pycache__/
+__pycache__/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# LangChain / LangGraph
+.langchain/
+chroma_db/
+
+# Streamlit
+.streamlit/secrets.toml
+.streamlit/cache/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Data files (local)
+*.pdf
+uploads/
+cache/
+
+# Explanation files (local only)
+_*_explanation.txt
+_app_explanation.txt
+_test_run_explanation.txt
